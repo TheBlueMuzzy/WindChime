@@ -11,8 +11,8 @@ function App() {
   } as const
 
   const cameraContainer = {
-    width: '80%',
-    height: '60%',
+    width: '95%',
+    height: '85%',
     borderRadius: '8px',
     overflow: 'hidden',
   } as const
