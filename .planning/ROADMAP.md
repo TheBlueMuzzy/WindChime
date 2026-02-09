@@ -41,7 +41,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: Install @yudiel/react-qr-scanner and barcode-detector polyfill, configure scanner component
+- [x] 02-01: Install @yudiel/react-qr-scanner and barcode-detector polyfill, configure scanner component
 - [ ] 02-02: Camera permissions flow — request rear camera, handle grant/deny
 - [ ] 02-03: Single QR detection — display detected QR value on screen as proof of life
 
@@ -139,7 +139,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Project Foundation | 2/2 | Complete | 2026-02-09 |
-| 2. QR Scanner Integration | 0/3 | Not started | - |
+| 2. QR Scanner Integration | 1/3 | In progress | - |
 | 3. Audio Engine Core | 0/3 | Not started | - |
 | 4. Test Content | 0/2 | Not started | - |
 | 5. Multi-Code Detection | 0/2 | Not started | - |

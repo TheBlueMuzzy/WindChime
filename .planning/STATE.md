@@ -5,37 +5,38 @@
 See: .planning/PROJECT.md (updated 2026-02-09)
 
 **Core value:** Point the camera at cards and instantly hear sounds — the "wow" moment must feel magical and work on any phone.
-**Current focus:** Phase 1 complete — ready for Phase 2: QR Scanner Integration
+**Current focus:** Phase 2: QR Scanner Integration — camera live, detecting codes
 
 ## Current Position
 
-Phase: 1 of 10 (Project Foundation)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-02-09 — Completed 01-02-PLAN.md
+Phase: 2 of 10 (QR Scanner Integration)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-09 — Completed 02-01-PLAN.md
 
-Progress: ██░░░░░░░░ 8%
+Progress: ███░░░░░░░ 12%
 
 ## Version
 
-0.1.0.5
+0.1.0.6
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 4 min
-- Total execution time: 0.13 hours
+- Total plans completed: 3
+- Average duration: 22 min
+- Total execution time: 1.1 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1 | 2/2 | 8 min | 4 min |
+| 2 | 1/3 | 51 min | 51 min |
 
 **Recent Trend:**
-- Last 5 plans: 5m, 3m
-- Trend: Stable
+- Last 5 plans: 5m, 3m, 51m
+- Trend: Phase 2 longer due to checkpoint fixes (HTTPS, UI)
 
 ## Accumulated Context
 
@@ -50,6 +51,8 @@ Recent decisions affecting current work:
 - Sounds bundled with app (no backend needed, pre-load on startup)
 - Inline styles for app shell (no CSS modules — simple enough layout)
 - dvh/dvw units for mobile-safe viewport coverage
+- HTTPS required for mobile camera — @vitejs/plugin-basic-ssl added
+- Default Scanner finder disabled — custom large scan area overlay instead
 
 ### Deferred Issues
 
@@ -62,5 +65,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-09
-Stopped at: Completed 01-02-PLAN.md — Phase 1 complete
+Stopped at: Completed 02-01-PLAN.md — Camera live, QR detection working
 Resume file: None
