@@ -1,3 +1,5 @@
+import QrScanner from './components/QrScanner'
+
 function App() {
   const fullScreenContainer = {
     width: '100dvw',
@@ -8,27 +10,20 @@ function App() {
     background: '#111',
   } as const
 
-  const cameraPlaceholder = {
+  const cameraContainer = {
     width: '80%',
     height: '60%',
-    background: '#222',
-    border: '2px dashed #444',
     borderRadius: '8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    overflow: 'hidden',
   } as const
-
-  const placeholderText = {
-    color: '#666',
-    fontSize: '1.2rem',
-    userSelect: 'none' as const,
-  }
 
   return (
     <div style={fullScreenContainer}>
-      <div style={cameraPlaceholder}>
-        <span style={placeholderText}>Camera will appear here</span>
+      <div style={cameraContainer}>
+        <QrScanner
+          onScan={(codes) => console.log(codes)}
+          onError={(error) => console.error(error)}
+        />
       </div>
     </div>
   )
