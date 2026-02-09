@@ -31,7 +31,7 @@ None
 
 Plans:
 - [x] 01-01: Scaffold Vite + React + TS project, install core dependencies
-- [ ] 01-02: App shell layout — full-screen landscape container, dark background, camera placeholder
+- [x] 01-02: App shell layout — full-screen landscape container, dark background, camera placeholder
 
 ### Phase 2: QR Scanner Integration
 **Goal**: Phone camera activates and detects a single QR code, displaying its raw value on screen
@@ -138,7 +138,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Project Foundation | 1/2 | In progress | - |
+| 1. Project Foundation | 2/2 | Complete | 2026-02-09 |
 | 2. QR Scanner Integration | 0/3 | Not started | - |
 | 3. Audio Engine Core | 0/3 | Not started | - |
 | 4. Test Content | 0/2 | Not started | - |
