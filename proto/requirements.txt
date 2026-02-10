@@ -1,0 +1,4 @@
+pydub
+librosa
+numpy
+qrcode[pil]
