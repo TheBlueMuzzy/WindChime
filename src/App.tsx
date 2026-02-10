@@ -298,12 +298,62 @@ function App() {
       </div>
 
       {cameraStatus === 'denied' && (
-        <div style={{ textAlign: 'center', padding: '2rem', color: '#fff' }}>
-          <h2 style={{ fontSize: '1.4rem', marginBottom: '0.75rem' }}>Camera access needed</h2>
-          <p style={{ fontSize: '0.95rem', lineHeight: 1.5, opacity: 0.8, maxWidth: '320px' }}>
-            This app needs your camera to scan QR codes. Please allow camera access in your browser
-            settings.
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#fff', maxWidth: '360px' }}>
+          <h2 style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}>Camera Access Blocked</h2>
+          <p style={{ fontSize: '0.9rem', lineHeight: 1.5, opacity: 0.7, marginBottom: '1.25rem' }}>
+            Wind Chime needs your camera to scan QR codes. Here's how to fix it:
           </p>
+          {(() => {
+            const ua = navigator.userAgent
+            const isSafari = ua.includes('Safari') && !ua.includes('Chrome')
+            const isChrome = ua.includes('Chrome')
+
+            if (isChrome) {
+              return (
+                <ol style={{ textAlign: 'left', fontSize: '0.9rem', lineHeight: 1.8, paddingLeft: '1.25rem', margin: '0 0 1.5rem 0', opacity: 0.9 }}>
+                  <li>Tap the lock icon next to the address bar</li>
+                  <li>Tap "Site settings"</li>
+                  <li>Find "Camera" and change to "Allow"</li>
+                  <li>Come back and tap Reload below</li>
+                </ol>
+              )
+            }
+            if (isSafari) {
+              return (
+                <ol style={{ textAlign: 'left', fontSize: '0.9rem', lineHeight: 1.8, paddingLeft: '1.25rem', margin: '0 0 1.5rem 0', opacity: 0.9 }}>
+                  <li>Open the Settings app on your phone</li>
+                  <li>Scroll down and tap "Safari"</li>
+                  <li>Tap "Camera" under "Settings for Websites"</li>
+                  <li>Change to "Allow"</li>
+                  <li>Come back and tap Reload below</li>
+                </ol>
+              )
+            }
+            // Generic fallback
+            return (
+              <ol style={{ textAlign: 'left', fontSize: '0.9rem', lineHeight: 1.8, paddingLeft: '1.25rem', margin: '0 0 1.5rem 0', opacity: 0.9 }}>
+                <li>Open your browser's settings</li>
+                <li>Find site permissions or privacy settings</li>
+                <li>Allow camera access for this site</li>
+                <li>Come back and tap Reload below</li>
+              </ol>
+            )
+          })()}
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              background: '#fff',
+              color: '#111',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '0.7rem 2rem',
+              fontSize: '1.05rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+          >
+            Reload
+          </button>
         </div>
       )}
 
