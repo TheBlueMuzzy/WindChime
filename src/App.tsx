@@ -84,15 +84,18 @@ function App() {
     return () => clearInterval(interval)
   }, [getPlaying, audioUnlocked])
 
-  // Pre-load all chime sounds on mount
+  // Pre-load all chime sounds once audio is unlocked (context resumed)
   useEffect(() => {
-    if (!soundsLoaded.current) {
-      soundsLoaded.current = true
-      for (const id of CHIME_IDS) {
-        void loadSound(id, `${import.meta.env.BASE_URL}sounds/${id}.mp3`)
-      }
+    if (!audioUnlocked) return
+    if (soundsLoaded.current) return
+    soundsLoaded.current = true
+    let loaded = 0
+    for (const id of CHIME_IDS) {
+      loadSound(id, `${import.meta.env.BASE_URL}sounds/${id}.mp3`)
+        .then(() => { loaded++; dbg(`Loaded ${loaded}/${CHIME_IDS.size}`) })
+        .catch((err) => dbg(`FAIL ${id}: ${err}`))
     }
-  }, [loadSound])
+  }, [audioUnlocked, loadSound])
 
   // Detect camera active by polling for a playing <video>
   useEffect(() => {
@@ -287,7 +290,7 @@ function App() {
         }}
       >
         <div style={{ color: '#ff0', marginBottom: '0.15rem' }}>
-          {audioUnlocked ? 'ON' : 'OFF'} | Scans: {scanCount}
+          {audioUnlocked ? 'ON' : 'OFF'} | Scans: {scanCount} | v0.1.1.4
         </div>
         {debugLog.map((line, i) => (
           <div key={i} style={{ opacity: 1 - i * 0.08 }}>{line}</div>
