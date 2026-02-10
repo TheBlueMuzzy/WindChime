@@ -2,7 +2,7 @@
 
 ## Overview
 
-Turn a physical wind chime card layout into a live audio experience. Core scanning + audio functionality complete (Phases 1-7). Remaining work: deploy, QR display page, polish, and iPhone testing. 11 phases total.
+Turn a physical wind chime card layout into a live audio experience. Core scanning + audio functionality complete (Phases 1-7). Remaining work: deploy, QR display page, polish, iPhone testing, and sound upgrade. 12 phases total.
 
 ## Domain Expertise
 
@@ -21,6 +21,7 @@ None
 - [x] **Phase 9: QR Display Page** - Separate hosted page showing QR codes for scanning from a phone
 - [x] **Phase 10: Polish** - Visual detection indicator, camera permission denied help screen
 - [ ] **Phase 11: iPhone Testing & Fixes** - External testing on iOS Safari, fix whatever breaks
+- [ ] **Phase 12: Sound Upgrade** - Replace 24 clips with 100 new clips from Source2, generate QR codes, make app fully dynamic
 
 ## Phase Details
 
@@ -134,10 +135,20 @@ Plans:
 Plans:
 - [ ] 11-01: iOS Safari pre-flight audit, deploy, real-device testing with iPhone tester
 
+### Phase 12: Sound Upgrade
+**Goal**: Replace 24 old clips with 100 new high-quality clips from Source2 recordings, generate matching QR codes, make app fully dynamic (GitHub API file discovery)
+**Depends on**: Phase 8 (needs deploy infrastructure), Phase 3 (audio engine)
+**Research**: Likely (Python audio processing, GitHub Contents API, waveform comparison)
+**Plans**: TBD (at least 2 — duplicate analysis first, then splicing + integration)
+
+Plans:
+- [ ] 12-01: TBD
+- [ ] 12-02: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 12
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -152,3 +163,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 9. QR Display Page | 1/1 | Complete | 2026-02-10 |
 | 10. Polish | 1/1 | Complete | 2026-02-10 |
 | 11. iPhone Testing & Fixes | 0/? | Blocked (needs tester) | - |
+| 12. Sound Upgrade | 0/? | Not started | - |
