@@ -19,7 +19,7 @@ function App() {
   const cameraContainerRef = useRef<HTMLDivElement>(null)
   const [audioUnlocked, setAudioUnlocked] = useState(false)
   const audioUnlockedRef = useRef(false)
-  const { loadSound, playSound, isPlaying, getPlaying, playingCount, stopAll, resume } = useAudioEngine()
+  const { loadSound, playSound, isPlaying, getPlaying, playingCount: _playingCount, stopAll, resume } = useAudioEngine()
   const soundsLoaded = useRef(false)
   const [nowPlaying, setNowPlaying] = useState<{ id: string; elapsed: number; duration: number }[]>([])
   const [debugLog, setDebugLog] = useState<string[]>([])
