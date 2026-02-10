@@ -23,6 +23,7 @@ export default memo(function QrScanner({ onScanRef, onErrorRef }: QrScannerProps
         formats={['qr_code']}
         constraints={{ facingMode: 'environment' }}
         scanDelay={500}
+        allowMultiple
         onScan={stableScan}
         onError={stableError}
         components={{ finder: false }}

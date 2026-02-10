@@ -2,6 +2,7 @@ import { useRef, useState, useCallback } from 'react'
 
 const FADE_IN = 0.05   // 50ms fade in
 const FADE_OUT = 0.15  // 150ms fade out
+const MAX_SIMULTANEOUS = 3
 
 export interface PlayingInfo {
   id: string
@@ -89,8 +90,10 @@ export function useAudioEngine() {
     const ctx = audioContextRef.current
     if (!ctx) return
 
+    if (playingRef.current.size >= MAX_SIMULTANEOUS) return
     cleanupExpired()
     if (playingRef.current.has(id)) return
+    if (playingRef.current.size >= MAX_SIMULTANEOUS) return
 
     const buffer = buffersRef.current.get(id)
     if (!buffer) return
@@ -140,5 +143,19 @@ export function useAudioEngine() {
     source.start(0)
   }, [])
 
-  return { loadSound, playSound, isPlaying, getPlaying, resume, isReady, contextState }
+  const playingCount = useCallback((): number => {
+    cleanupExpired()
+    return playingRef.current.size
+  }, [])
+
+  const stopAll = useCallback((): void => {
+    for (const [id, entry] of playingRef.current) {
+      try {
+        entry.source.stop()
+      } catch { /* already stopped */ }
+      playingRef.current.delete(id)
+    }
+  }, [])
+
+  return { loadSound, playSound, isPlaying, getPlaying, playingCount, stopAll, resume, isReady, contextState }
 }

@@ -93,9 +93,12 @@ No existing app turns a physical card layout into a live, spatial audio experien
 
 ### Rules
 - Each QR code maps to exactly one sound file
-- A sound plays when its QR code is first detected in the current "scan session"
+- Scanner runs continuously (every 500ms) only after user taps to begin scanning
+- A sound plays when its QR code is detected AND the sound is not already playing
+- Maximum 3 sounds playing simultaneously — additional codes wait until a slot opens
 - Sounds are ~5 seconds long with natural fade-out
-- If a QR code leaves and re-enters the frame, it can re-trigger (with a cooldown to prevent spam)
+- If a QR code leaves and re-enters the frame, it re-triggers (no cooldown — scanner dedup handles spam)
+- Tapping again stops all playback immediately and disables scanning
 - Left-to-right position in frame determines perceived "order" but sounds can overlap freely
 
 ## 5. Game Systems
@@ -105,9 +108,10 @@ No existing app turns a physical card layout into a live, spatial audio experien
 - **Tech**: `@yudiel/react-qr-scanner` → `barcode-detector` polyfill → native API (Android) or ZXing-C++ WASM (iOS)
 - **Data**: Each detection → `{ rawValue: string, boundingBox: { x, y, width, height }, cornerPoints: [{x,y}...] }`
 - **Key rules**:
-  - Scans every ~200ms (configurable via `scanDelay`)
+  - Scans every 500ms (`scanDelay={500}`)
+  - `allowMultiple={true}` — fires onScan every cycle while codes are visible (not just on first detection)
+  - Scanner runs at all times but scan results are ignored until user taps to begin
   - Returns array of ALL detected codes with bounding box positions
-  - Sorts results left-to-right by `boundingBox.x`
   - Works on iOS Safari 14.5+ and Android Chrome 88+
 
 ### System: Sound Library
@@ -120,21 +124,15 @@ No existing app turns a physical card layout into a live, spatial audio experien
 
 ### System: Audio Playback
 - **Purpose**: Play, layer, and fade sounds based on scan events
-- **Tech**: Web Audio API for precise control over layering and fading
+- **Tech**: Web Audio API (`useAudioEngine` hook) for precise control over layering and fading
 - **Key rules**:
-  - When a new QR code is detected: create audio source, play immediately
-  - Each sound has a natural fade-out envelope (~1-2 second tail)
-  - Multiple sounds can play simultaneously (layering)
-  - Cooldown per QR code: won't re-trigger same code within 3 seconds of last trigger
+  - When a QR code is detected and not already playing: create audio source, play immediately
+  - Hard cap: maximum 3 simultaneous sounds (`MAX_SIMULTANEOUS = 3`). Additional codes are silently skipped until a slot opens.
+  - Each sound has fade-in (50ms) and fade-out (150ms) envelopes via GainNode
+  - `stopAll()` immediately kills all playing sources on toggle-off
   - Gain node per sound for individual volume control
-
-### System: Detection State
-- **Purpose**: Track which codes have been seen, when, and manage cooldowns
-- **Data**: In-memory map: `{ [qrCode]: { lastPlayed: timestamp, isPlaying: boolean } }`
-- **Key rules**:
-  - New code detected + not in cooldown → trigger sound
-  - Code leaves frame → mark as "exited" (eligible for re-trigger after cooldown)
-  - Code stays in frame → no re-trigger (it already played)
+  - No cooldown system — scanner's `allowMultiple` + `isPlaying` check handles all dedup
+  - Fallback timeout cleanup for mobile (in case `onended` doesn't fire)
 
 ### Balance Data
 N/A — no balance needed for a companion app.
@@ -177,7 +175,7 @@ N/A — no balance needed for a companion app.
 
 - **Multi-code detection**: Up to 255 QR codes per frame, with `boundingBox` (x, y, width, height) and `cornerPoints` for each
 - **Left-to-right ordering**: Sort detected codes by `boundingBox.x`
-- **Continuous scanning**: No confirmation dialogs, scans every ~200ms
+- **Continuous scanning**: No confirmation dialogs, scans every 500ms with `allowMultiple`
 - **Camera**: `{ facingMode: 'environment' }` for rear camera
 
 ### Platform Support
@@ -256,12 +254,12 @@ public/
 - Open app on phone → verify camera activates
 - Point at one card → verify sound plays
 - Pan across all 3 → verify layering and timing
-- Move camera away and back → verify cooldown/re-trigger
+- Move camera away and back → verify re-trigger (handled by allowMultiple scanner behavior)
 - Test on Chrome Android (primary target)
 
 ### Automated Tests (if time)
 - Unit test: soundMap returns correct file for QR code
-- Unit test: cooldown logic (mock timestamps)
+- Unit test: audio engine playSound/stopAll/isPlaying logic
 - Unit test: audio engine creates/fades nodes correctly
 
 ### Quality Gates

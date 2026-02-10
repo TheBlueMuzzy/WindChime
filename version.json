@@ -1,7 +1,7 @@
 {
   "name": "Wind Chime - Companion App",
-  "version": "0.1.0",
-  "build": 18,
+  "version": "0.1.1",
+  "build": 0,
   "history": [
     {
       "version": "0.1.0",
@@ -55,6 +55,12 @@
       "build": 18,
       "date": "2026-02-09",
       "summary": "24 real chime mp3s, playing state tracking, Currently Playing UI, remove SOUND_MAP"
+    },
+    {
+      "version": "0.1.1",
+      "build": 0,
+      "date": "2026-02-09",
+      "summary": "Fix scan/audio lifecycle: allowMultiple continuous scanning, 3-sound cap, instant stop on toggle, tap-to-scan gate"
     }
   ]
 }
