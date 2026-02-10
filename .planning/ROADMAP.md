@@ -17,7 +17,7 @@ None
 - [x] **Phase 5: Multi-Code Detection** - Multi-code detection via allowMultiple (left-to-right sorting cut)
 - [x] **Phase 6: Sound Layering & Fade** - Concurrent playback with gain nodes, fade envelopes (done early in Phase 3)
 - [x] **Phase 7: Detection State & Cooldowns** - Superseded by allowMultiple + isPlaying pattern
-- [ ] **Phase 8: Git + Deploy** - Git repo, GitHub remote, GitHub Pages deploy (like GOOPS)
+- [x] **Phase 8: Git + Deploy** - Git repo, GitHub remote, GitHub Pages deploy (like GOOPS)
 - [ ] **Phase 9: QR Display Page** - Separate hosted page showing QR codes for scanning from a phone (design TBD with Muzzy)
 - [ ] **Phase 10: Polish** - Visual detection indicator, camera permission denied help screen
 - [ ] **Phase 11: iPhone Testing & Fixes** - External testing on iOS Safari, fix whatever breaks
@@ -104,7 +104,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 08-01: Create GitHub repo, configure Vite base path, deploy script, push to GitHub Pages
+- [x] 08-01: Create GitHub repo, configure Vite base path, deploy script, push to GitHub Pages
 
 ### Phase 9: QR Display Page
 **Goal**: Separate hosted page showing QR codes on a computer screen for phone scanning
@@ -149,7 +149,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 5. Multi-Code Detection | 1/1 | Complete (L-R sorting cut) | 2026-02-09 |
 | 6. Sound Layering & Fade | 3/3 | Complete (done early) | 2026-02-09 |
 | 7. Detection State & Cooldowns | 2/2 | Complete (superseded) | 2026-02-09 |
-| 8. Git + Deploy | 0/1 | Not started | - |
+| 8. Git + Deploy | 1/1 | Complete | 2026-02-10 |
 | 9. QR Display Page | 0/? | Awaiting design input | - |
 | 10. Polish | 0/1 | Not started | - |
 | 11. iPhone Testing & Fixes | 0/? | Blocked (needs tester) | - |

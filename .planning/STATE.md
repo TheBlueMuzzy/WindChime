@@ -5,27 +5,27 @@
 See: .planning/PROJECT.md (updated 2026-02-09)
 
 **Core value:** Point the camera at cards and instantly hear sounds — the "wow" moment must feel magical and work on any phone.
-**Current focus:** Phase 8 — Git + Deploy (core app complete through Phase 7)
+**Current focus:** Phase 8 complete — app deployed to GitHub Pages. Next: Phase 9 (QR Display Page) or Phase 10 (Polish).
 
 ## Current Position
 
 Phase: 8 of 11 (Git + Deploy)
-Plan: Not yet planned
-Status: Phases 1-7 complete. Roadmap restructured — old phases 4-7 closed, new phases 8-11 created.
-Last activity: 2026-02-10 — Roadmap restructured, ready to plan deploy phase
+Plan: 1 of 1 in current phase
+Status: Phase complete
+Last activity: 2026-02-10 — Completed 08-01-PLAN.md
 
-Progress: ██████████████░░░░ 64% (7/11 phases complete)
+Progress: ████████████████░░ 73% (8/11 phases complete)
 
 ## Version
 
-0.1.1.0
+0.1.1.4
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
+- Total plans completed: 9
 - Average duration: 18 min
-- Total execution time: 2.3 hours
+- Total execution time: 2.7 hours
 
 **By Phase:**
 
@@ -34,10 +34,11 @@ Progress: ██████████████░░░░ 64% (7/11 phase
 | 1 | 2/2 | 8 min | 4 min |
 | 2 | 3/3 | 74 min | 25 min |
 | 3 | 3/3 | 52 min | 17 min |
+| 8 | 1/1 | 22 min | 22 min |
 
 **Recent Trend:**
-- Last 5 plans: 18m, 5m, 4m, 15m, 33m
-- Trend: Checkpoint verification added time on 03-03 (bug fixes during device test)
+- Last 5 plans: 5m, 4m, 15m, 33m, 22m
+- Trend: Deploy plan included 2 bug fixes during checkpoint verification (sound paths + deferred loading)
 
 ## Accumulated Context
 
@@ -66,6 +67,8 @@ Recent decisions affecting current work:
 - **No cooldown/staleness system** — removed visibleCodesRef tracking, replay intervals, and staleness timeouts. Scanner's continuous firing + isPlaying check handles everything.
 - **stopAll() on toggle off** — immediately kills all AudioBufferSourceNodes when user taps to disable
 - **WindChime dev server pinned to port 5213** — avoids collision with Goops on 5173
+- **BASE_URL prefix for public assets** — `import.meta.env.BASE_URL` required for all fetch paths to `/public/` files (GitHub Pages subdirectory hosting)
+- **Deferred sound loading** — load buffers only after user tap resumes AudioContext (mobile browsers reject decodeAudioData on suspended context)
 
 ### Deferred Issues
 
@@ -73,18 +76,10 @@ None yet.
 
 ### Blockers/Concerns
 
-- iOS Safari doesn't support native BarcodeDetector API — relies on WASM polyfill (Phase 8)
+- iOS Safari doesn't support native BarcodeDetector API — relies on WASM polyfill (Phase 11)
 
 ## Session Continuity
 
 Last session: 2026-02-10
-Stopped at: Roadmap restructured, ready to plan Phase 8 (Git + Deploy)
+Stopped at: Completed 08-01-PLAN.md (Phase 8: Git + Deploy)
 Resume file: None
-
-## Roadmap Restructure (2026-02-10)
-
-Phases 4-7 closed out (all complete or superseded). New phases added:
-- **Phase 8**: Git + Deploy — GitHub repo + GitHub Pages (mirrors GOOPS pattern)
-- **Phase 9**: QR Display Page — separate hosted page for showing QR codes on screen (design TBD with Muzzy)
-- **Phase 10**: Polish — visual detection indicator + camera permission denied help
-- **Phase 11**: iPhone Testing & Fixes — needs external tester with iPhone
