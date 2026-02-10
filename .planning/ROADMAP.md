@@ -139,11 +139,14 @@ Plans:
 **Goal**: Replace 24 old clips with 100 new high-quality clips from Source2 recordings, generate matching QR codes, make app fully dynamic (GitHub API file discovery)
 **Depends on**: Phase 8 (needs deploy infrastructure), Phase 3 (audio engine)
 **Research**: Likely (Python audio processing, GitHub Contents API, waveform comparison)
-**Plans**: TBD (at least 2 — duplicate analysis first, then splicing + integration)
+**Plans**: 5 plans
 
 Plans:
-- [ ] 12-01: TBD
-- [ ] 12-02: TBD
+- [ ] 12-01: Python setup + duplicate detection analysis (checkpoint: user curates sources)
+- [ ] 12-02: Splice 100 five-second clips from curated sources with fade envelopes
+- [ ] 12-03: QR code generation (100 PNGs) + old sound directory cleanup
+- [ ] 12-04: Dynamic sound discovery via GitHub API (app + codes.html, remove hardcoded lists)
+- [ ] 12-05: Deploy to GitHub Pages + end-to-end verification (checkpoint: user tests on phone)
 
 ## Progress
 
@@ -163,4 +166,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 9. QR Display Page | 1/1 | Complete | 2026-02-10 |
 | 10. Polish | 1/1 | Complete | 2026-02-10 |
 | 11. iPhone Testing & Fixes | 0/? | Blocked (needs tester) | - |
-| 12. Sound Upgrade | 0/? | Not started | - |
+| 12. Sound Upgrade | 0/5 | Not started | - |
