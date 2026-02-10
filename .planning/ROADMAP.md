@@ -143,7 +143,7 @@ Plans:
 
 Plans:
 - [x] 12-01: Python setup + duplicate detection analysis (checkpoint: user curates sources)
-- [ ] 12-02: Splice 100 five-second clips from curated sources with fade envelopes
+- [x] 12-02: Splice 100 five-second clips from curated sources with fade envelopes
 - [ ] 12-03: QR code generation (100 PNGs) + old sound directory cleanup
 - [ ] 12-04: Dynamic sound discovery via GitHub API (app + codes.html, remove hardcoded lists)
 - [ ] 12-05: Deploy to GitHub Pages + end-to-end verification (checkpoint: user tests on phone)
@@ -166,4 +166,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 9. QR Display Page | 1/1 | Complete | 2026-02-10 |
 | 10. Polish | 1/1 | Complete | 2026-02-10 |
 | 11. iPhone Testing & Fixes | 0/? | Blocked (needs tester) | - |
-| 12. Sound Upgrade | 1/5 | In progress | - |
+| 12. Sound Upgrade | 2/5 | In progress | - |
