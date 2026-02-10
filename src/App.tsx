@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import QrScanner from './components/QrScanner'
+import { useAudioEngine } from './hooks/useAudioEngine'
 
 type CameraStatus = 'loading' | 'active' | 'denied' | 'error'
 
@@ -9,6 +10,16 @@ function App() {
   const [cameraStatus, setCameraStatus] = useState<CameraStatus>('loading')
   const hasActivated = useRef(false)
   const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const { loadSound, playSound } = useAudioEngine()
+  const soundLoaded = useRef(false)
+
+  // Load test sound on mount (temporary — replaced in 03-02 with proper mapping)
+  useEffect(() => {
+    if (!soundLoaded.current) {
+      soundLoaded.current = true
+      void loadSound('test', '/sounds/test-tone.wav')
+    }
+  }, [loadSound])
 
   const fullScreenContainer = {
     width: '100dvw',
@@ -44,6 +55,8 @@ function App() {
                 const values = codes.map((c) => c.rawValue).join(', ')
                 setLastDetected(values)
                 setScanCount((c) => c + 1)
+                // Temporary: play test sound on any QR detection (replaced in 03-02)
+                playSound('test')
               }
               clearTimer.current = setTimeout(() => {
                 setLastDetected('')
