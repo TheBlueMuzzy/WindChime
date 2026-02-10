@@ -5,27 +5,27 @@
 See: .planning/PROJECT.md (updated 2026-02-09)
 
 **Core value:** Point the camera at cards and instantly hear sounds — the "wow" moment must feel magical and work on any phone.
-**Current focus:** Phase 12 (Sound Upgrade) in progress — 3/5 plans complete.
+**Current focus:** Phase 12 (Sound Upgrade) in progress — 4/5 plans complete.
 
 ## Current Position
 
 Phase: 12 of 12 (Sound Upgrade)
-Plan: 3 of 5 in current phase
+Plan: 4 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-10 — Completed 12-03-PLAN.md
+Last activity: 2026-02-10 — Completed 12-04-PLAN.md
 
-Progress: ████████████████████ 95% (13/15 total plans in Phase 12 milestone)
+Progress: ████████████████████ 97% (14/15 total plans in Phase 12 milestone)
 
 ## Version
 
-0.1.2.10
+0.1.2.12
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
-- Average duration: 15 min
-- Total execution time: 3.3 hours
+- Total plans completed: 14
+- Average duration: 14 min
+- Total execution time: 3.4 hours
 
 **By Phase:**
 
@@ -36,11 +36,11 @@ Progress: ████████████████████ 95% (13/1
 | 3 | 3/3 | 52 min | 17 min |
 | 8 | 1/1 | 22 min | 22 min |
 | 10 | 1/1 | 12 min | 12 min |
-| 12 | 3/5 | 18 min | 6 min |
+| 12 | 4/5 | 23 min | 6 min |
 
 **Recent Trend:**
-- Last 5 plans: 22m, 12m, 11m, 4m, 3m
-- Trend: Accelerating — Python toolchain + straightforward tasks
+- Last 5 plans: 12m, 11m, 4m, 3m, 5m
+- Trend: Fast — small focused plans executing quickly
 
 ## Accumulated Context
 
@@ -83,5 +83,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-10
-Stopped at: Completed 12-03-PLAN.md (Phase 12: Sound Upgrade — QR codes + cleanup)
+Stopped at: Completed 12-04-PLAN.md (Phase 12: Sound Upgrade — dynamic discovery)
 Resume file: None
