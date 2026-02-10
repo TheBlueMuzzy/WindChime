@@ -9,23 +9,23 @@ See: .planning/PROJECT.md (updated 2026-02-09)
 
 ## Current Position
 
-Phase: 2 of 10 (QR Scanner Integration)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-02-09 — Completed 02-03-PLAN.md
+Phase: 3 of 10 (Audio Engine Core)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-09 — Completed 03-01-PLAN.md
 
-Progress: █████░░░░░ 20%
+Progress: ██████░░░░ 25%
 
 ## Version
 
-0.1.0.8
+0.1.0.10
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: 18 min
-- Total execution time: 1.4 hours
+- Total plans completed: 6
+- Average duration: 16 min
+- Total execution time: 1.5 hours
 
 **By Phase:**
 
@@ -33,9 +33,10 @@ Progress: █████░░░░░ 20%
 |-------|-------|-------|----------|
 | 1 | 2/2 | 8 min | 4 min |
 | 2 | 3/3 | 74 min | 25 min |
+| 3 | 1/3 | 4 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 5m, 3m, 51m, 18m, 5m
+- Last 5 plans: 3m, 51m, 18m, 5m, 4m
 - Trend: Fast when prior work reduces scope
 
 ## Accumulated Context
@@ -47,6 +48,9 @@ Recent decisions affecting current work:
 
 - @yudiel/react-qr-scanner chosen (only React lib with multi-code + position + iOS + Android)
 - Web Audio API for playback (need precise layering, fade envelopes, concurrent sounds)
+- Lazy AudioContext creation (on first playSound, not mount) — avoids autoplay warnings
+- Auto-resume suspended AudioContext in playSound — mobile autoplay policy
+- Map<string, AudioBuffer> for buffer registry
 - 3 cards for v1 prototype (matches game rules, architecture supports more)
 - Sounds bundled with app (no backend needed, pre-load on startup)
 - Inline styles for app shell (no CSS modules — simple enough layout)
@@ -65,5 +69,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-09
-Stopped at: Completed 02-03-PLAN.md — Phase 2 complete, QR scanning fully working
+Stopped at: Completed 03-01-PLAN.md — useAudioEngine hook created, test sound plays on QR detect
 Resume file: None
