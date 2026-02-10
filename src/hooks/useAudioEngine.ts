@@ -4,17 +4,35 @@ export function useAudioEngine() {
   const audioContextRef = useRef<AudioContext | null>(null)
   const buffersRef = useRef<Map<string, AudioBuffer>>(new Map())
   const [isReady, setIsReady] = useState(false)
+  const [contextState, setContextState] = useState<AudioContextState>('suspended')
 
   // Lazily create the AudioContext on first use
   function getContext(): AudioContext {
     if (!audioContextRef.current) {
       const AudioCtx =
         window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
-      audioContextRef.current = new AudioCtx()
+      const ctx = new AudioCtx()
+
+      // Track state changes reactively so UI can respond
+      ctx.onstatechange = () => {
+        setContextState(ctx.state)
+      }
+
+      setContextState(ctx.state)
+      audioContextRef.current = ctx
       setIsReady(true)
     }
     return audioContextRef.current
   }
+
+  // Resume a suspended AudioContext — call this from a user gesture handler
+  const resume = useCallback(async (): Promise<void> => {
+    const ctx = audioContextRef.current
+    if (!ctx) return
+    if (ctx.state === 'suspended') {
+      await ctx.resume()
+    }
+  }, [])
 
   const loadSound = useCallback(async (id: string, url: string): Promise<void> => {
     const ctx = getContext()
@@ -41,7 +59,7 @@ export function useAudioEngine() {
       return
     }
 
-    // Resume context if it was suspended (e.g. mobile autoplay policy)
+    // Fallback: resume context if suspended (primary unlock is tap overlay)
     if (ctx.state === 'suspended') {
       void ctx.resume()
     }
@@ -52,5 +70,5 @@ export function useAudioEngine() {
     source.start(0)
   }, [])
 
-  return { loadSound, playSound, isReady }
+  return { loadSound, playSound, resume, isReady, contextState }
 }
