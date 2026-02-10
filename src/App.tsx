@@ -1,7 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import QrScanner from './components/QrScanner'
 import { useAudioEngine } from './hooks/useAudioEngine'
-import { SOUND_MAP } from './config/sounds'
+
+/** All valid chime IDs — QR codes encode these values directly. */
+const CHIME_IDS = new Set([
+  'Chime_01', 'Chime_02', 'Chime_03', 'Chime_04', 'Chime_05', 'Chime_06',
+  'Chime_07', 'Chime_08', 'Chime_09', 'Chime_10', 'Chime_11', 'Chime_12',
+  'Chime_13', 'Chime_14', 'Chime_15', 'Chime_16', 'Chime_17', 'Chime_18',
+  'Chime_19', 'Chime_20', 'Chime_21', 'Chime_22', 'Chime_23', 'Chime_24',
+])
 
 type CameraStatus = 'loading' | 'active' | 'denied' | 'error'
 
@@ -12,20 +19,67 @@ function App() {
   const cameraContainerRef = useRef<HTMLDivElement>(null)
   const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [audioUnlocked, setAudioUnlocked] = useState(false)
-  const { loadSound, playSound, resume } = useAudioEngine()
+  const audioUnlockedRef = useRef(false)
+  const { loadSound, playSound, isPlaying, getPlaying, resume } = useAudioEngine()
   const soundsLoaded = useRef(false)
+  const [nowPlaying, setNowPlaying] = useState<{ id: string; elapsed: number; duration: number }[]>([])
 
-  // Pre-load all sounds from SOUND_MAP on mount
+  // Scan handler via ref — never causes QrScanner re-render
+  const onScanRef = useRef((codes: { rawValue: string }[]) => {
+    if (clearTimer.current) clearTimeout(clearTimer.current)
+    if (codes.length > 0) {
+      const values = codes.map((c) => c.rawValue).join(', ')
+      setLastDetected(values)
+      setScanCount((c) => c + 1)
+      for (const code of codes) {
+        const raw = code.rawValue
+        if (CHIME_IDS.has(raw) && audioUnlockedRef.current && !isPlaying(raw)) {
+          playSound(raw)
+        }
+      }
+    }
+    clearTimer.current = setTimeout(() => {
+      setLastDetected('')
+    }, 2000)
+  })
+
+  // Error handler via ref
+  const onErrorRef = useRef((error: unknown) => {
+    console.error(error)
+    if (
+      error instanceof DOMException &&
+      (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError')
+    ) {
+      setCameraStatus('denied')
+    } else {
+      setCameraStatus('error')
+    }
+  })
+
+  // Poll playing state at 10fps — only when audio is active
+  useEffect(() => {
+    if (!audioUnlocked) return
+    const interval = setInterval(() => {
+      const playing = getPlaying()
+      setNowPlaying((prev) => {
+        if (playing.length === 0 && prev.length === 0) return prev
+        return playing
+      })
+    }, 100)
+    return () => clearInterval(interval)
+  }, [getPlaying, audioUnlocked])
+
+  // Pre-load all chime sounds on mount
   useEffect(() => {
     if (!soundsLoaded.current) {
       soundsLoaded.current = true
-      for (const [id, url] of Object.entries(SOUND_MAP)) {
-        void loadSound(id, url)
+      for (const id of CHIME_IDS) {
+        void loadSound(id, `/sounds/${id}.mp3`)
       }
     }
   }, [loadSound])
 
-  // Detect camera active by polling for a playing <video> element
+  // Detect camera active by polling for a playing <video>
   useEffect(() => {
     if (cameraStatus !== 'loading') return
     const interval = setInterval(() => {
@@ -61,38 +115,28 @@ function App() {
     <div style={fullScreenContainer}>
       {showScanner && (
         <div ref={cameraContainerRef} style={cameraContainer}>
-          <QrScanner
-            onScan={(codes) => {
-              if (clearTimer.current) clearTimeout(clearTimer.current)
-              if (codes.length > 0) {
-                const values = codes.map((c) => c.rawValue).join(', ')
-                setLastDetected(values)
-                setScanCount((c) => c + 1)
-                // Play matching sound for each detected QR code
-                for (const code of codes) {
-                  if (code.rawValue in SOUND_MAP && audioUnlocked) {
-                    playSound(code.rawValue)
-                  }
-                }
-              }
-              clearTimer.current = setTimeout(() => {
-                setLastDetected('')
-              }, 2000)
-            }}
-            onError={(error) => {
-              console.error(error)
-              if (
-                error instanceof DOMException &&
-                (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError')
-              ) {
-                setCameraStatus('denied')
-              } else {
-                setCameraStatus('error')
-              }
-            }}
-            lastDetected={lastDetected}
-            scanCount={scanCount}
-          />
+          <QrScanner onScanRef={onScanRef} onErrorRef={onErrorRef} />
+          {/* Detected code display */}
+          {lastDetected && (
+            <span
+              style={{
+                position: 'absolute',
+                top: '12px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                color: '#0f0',
+                fontSize: '0.8rem',
+                pointerEvents: 'none',
+                textShadow: '0 1px 3px rgba(0,0,0,0.8)',
+                background: 'rgba(0,0,0,0.5)',
+                padding: '4px 10px',
+                borderRadius: '4px',
+                zIndex: 5,
+              }}
+            >
+              Detected: {lastDetected}{scanCount ? ` (scan #${scanCount})` : ''}
+            </span>
+          )}
           {cameraStatus === 'loading' && (
             <div
               style={{
@@ -121,8 +165,12 @@ function App() {
               onClick={() => {
                 if (audioUnlocked) {
                   setAudioUnlocked(false)
+                  audioUnlockedRef.current = false
                 } else {
-                  void resume().then(() => setAudioUnlocked(true))
+                  void resume().then(() => {
+                    setAudioUnlocked(true)
+                    audioUnlockedRef.current = true
+                  })
                 }
               }}
               style={{
@@ -150,6 +198,52 @@ function App() {
                   Tap anywhere to enable sound
                 </span>
               )}
+            </div>
+          )}
+          {/* Currently Playing */}
+          {nowPlaying.length > 0 && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 25,
+                pointerEvents: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0.4rem',
+              }}
+            >
+              <div
+                style={{
+                  color: 'rgba(255,255,255,0.6)',
+                  fontSize: '0.75rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  marginBottom: '0.2rem',
+                }}
+              >
+                Currently Playing
+              </div>
+              {nowPlaying.map((s) => (
+                <div
+                  key={s.id}
+                  style={{
+                    background: 'rgba(0,0,0,0.75)',
+                    color: '#0f0',
+                    fontFamily: 'monospace',
+                    fontSize: '1.1rem',
+                    fontWeight: 700,
+                    padding: '0.3rem 0.8rem',
+                    borderRadius: '6px',
+                    whiteSpace: 'nowrap',
+                  } as CSSProperties}
+                >
+                  {s.id}: {s.elapsed.toFixed(1)}/{s.duration.toFixed(1)}s
+                </div>
+              ))}
             </div>
           )}
         </div>
