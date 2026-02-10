@@ -5,27 +5,27 @@
 See: .planning/PROJECT.md (updated 2026-02-09)
 
 **Core value:** Point the camera at cards and instantly hear sounds — the "wow" moment must feel magical and work on any phone.
-**Current focus:** Phase 3: Audio Engine Core — Web Audio API, sound playback on QR detection
+**Current focus:** Phase 3 complete — ready for Phase 4: Test Content
 
 ## Current Position
 
 Phase: 3 of 10 (Audio Engine Core)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-09 — Completed 03-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-09 — Completed 03-03-PLAN.md
 
-Progress: ███████░░░ 29%
+Progress: ████████░░ 33%
 
 ## Version
 
-0.1.0.12
+0.1.0.15
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
-- Average duration: 16 min
-- Total execution time: 1.75 hours
+- Total plans completed: 8
+- Average duration: 18 min
+- Total execution time: 2.3 hours
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: ███████░░░ 29%
 |-------|-------|-------|----------|
 | 1 | 2/2 | 8 min | 4 min |
 | 2 | 3/3 | 74 min | 25 min |
-| 3 | 2/3 | 19 min | 10 min |
+| 3 | 3/3 | 52 min | 17 min |
 
 **Recent Trend:**
-- Last 5 plans: 51m, 18m, 5m, 4m, 15m
-- Trend: Consistent speed on well-scoped plans
+- Last 5 plans: 18m, 5m, 4m, 15m, 33m
+- Trend: Checkpoint verification added time on 03-03 (bug fixes during device test)
 
 ## Accumulated Context
 
@@ -50,6 +50,9 @@ Recent decisions affecting current work:
 - Web Audio API for playback (need precise layering, fade envelopes, concurrent sounds)
 - Lazy AudioContext creation (on first playSound, not mount) — avoids autoplay warnings
 - Auto-resume suspended AudioContext in playSound — mobile autoplay policy
+- Video element polling for camera activation (readyState >= 2) — onScan callback unreliable
+- Playback gated on audioUnlocked state — no sound before explicit user tap
+- Tap-anywhere toggle for sound on/off — unified gesture, no separate button
 - Map<string, AudioBuffer> for buffer registry
 - SOUND_MAP as Record<string, string> — QR rawValue keys to sound URLs
 - QR rawValue used directly as sound ID — no intermediate mapping
@@ -71,5 +74,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-09
-Stopped at: Completed 03-02-PLAN.md — QR-to-sound mapping working, verified on device
+Stopped at: Completed 03-03-PLAN.md — Phase 3 complete, mobile audio unlock verified on device
 Resume file: None
