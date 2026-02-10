@@ -89,7 +89,7 @@ function App() {
     if (!soundsLoaded.current) {
       soundsLoaded.current = true
       for (const id of CHIME_IDS) {
-        void loadSound(id, `/sounds/${id}.mp3`)
+        void loadSound(id, `${import.meta.env.BASE_URL}sounds/${id}.mp3`)
       }
     }
   }, [loadSound])
