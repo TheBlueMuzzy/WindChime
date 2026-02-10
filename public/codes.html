@@ -9,15 +9,16 @@
       margin: 0;
       padding: 2rem;
       min-height: 100vh;
-      background: #fff;
+      background: #111;
       font-family: system-ui, sans-serif;
-      color: #333;
+      color: #ddd;
     }
     h1 {
       text-align: center;
       margin: 0 0 1.5rem;
       font-size: 1.6rem;
       font-weight: 600;
+      color: #fff;
     }
 
     /* Active slots */
@@ -34,13 +35,15 @@
       align-items: center;
     }
     .slot img {
-      border: 2px solid #ccc;
+      border: 2px solid #444;
       border-radius: 8px;
+      background: #fff;
     }
     .slot-label {
       margin-top: 0.5rem;
       font-size: 1.1rem;
       font-weight: 500;
+      color: #ccc;
     }
 
     /* Randomize button */
@@ -49,54 +52,63 @@
       margin: 1.5rem 0;
     }
     .randomize-btn {
-      background: #333;
-      color: #fff;
+      background: #fff;
+      color: #111;
       border: none;
       border-radius: 6px;
       padding: 0.6rem 1.5rem;
       font-size: 1rem;
       cursor: pointer;
       font-family: inherit;
+      font-weight: 600;
     }
     .randomize-btn:hover {
-      background: #555;
+      background: #ccc;
     }
 
-    /* Separator */
+    /* Separator — push All Chimes down by one grid-QR height (225px) */
     .separator {
       border: none;
-      border-top: 1px solid #ddd;
-      margin: 2rem 0;
+      border-top: 1px solid #333;
+      margin: 2rem 0 0;
+      padding-bottom: 225px;
     }
     .section-label {
       text-align: center;
       font-size: 0.9rem;
-      color: #999;
+      color: #666;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       margin-bottom: 1.5rem;
     }
 
-    /* Grid */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1.5rem;
-      justify-items: center;
+    /* Scroll strip — same width as 6 columns would be, scrolls horizontally */
+    .scroll-wrapper {
+      max-width: calc(225px * 6 + 4rem * 5 + 4px * 6);
+      margin: 0 auto;
+      overflow-x: auto;
+    }
+    .scroll-strip {
+      display: flex;
+      gap: 4rem;
+      padding-bottom: 0.75rem;
     }
     .grid-item {
       display: flex;
       flex-direction: column;
       align-items: center;
+      flex-shrink: 0;
     }
     .grid-item img {
-      border: 2px solid #ccc;
+      border: 2px solid #444;
       border-radius: 8px;
+      background: #fff;
     }
     .grid-label {
       margin-top: 0.4rem;
-      font-size: 0.95rem;
-      color: #555;
+      font-size: 0.9rem;
+      color: #888;
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -113,15 +125,19 @@
   <hr class="separator">
   <div class="section-label">All Chimes</div>
 
-  <!-- Full grid: every chime -->
-  <div class="grid" id="grid"></div>
+  <!-- Full strip: every chime, scrolls horizontally -->
+  <div class="scroll-wrapper">
+    <div class="scroll-strip" id="grid"></div>
+  </div>
 
+  <!-- Dynamic chime list generated from audio/spliced/ -->
+  <script src="chime-data.js"></script>
   <script>
-    // All chime IDs — must match what the scanner app expects
-    const ALL_CHIMES = [];
-    for (let i = 1; i <= 24; i++) {
-      ALL_CHIMES.push('Chime_' + String(i).padStart(2, '0'));
-    }
+    // CHIME_IDS comes from chime-data.js (auto-generated from audio/spliced/)
+    const ALL_CHIMES = window.CHIME_IDS || [];
+
+    const SLOT_SIZE = 300;
+    const GRID_SIZE = Math.round(SLOT_SIZE * 0.75); // 225px
 
     function qrUrl(value, size) {
       return `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(value)}&size=${size}x${size}`;
@@ -131,7 +147,6 @@
       return id.replace('_', ' ');
     }
 
-    // Pick 3 random unique chimes
     function pickRandom3() {
       const shuffled = [...ALL_CHIMES].sort(() => Math.random() - 0.5);
       return shuffled.slice(0, 3);
@@ -144,7 +159,7 @@
         const slot = document.createElement('div');
         slot.className = 'slot';
         slot.innerHTML = `
-          <img src="${qrUrl(id, 300)}" alt="QR: ${id}" width="300" height="300" />
+          <img src="${qrUrl(id, SLOT_SIZE)}" alt="QR: ${id}" width="${SLOT_SIZE}" height="${SLOT_SIZE}" />
           <div class="slot-label">${formatLabel(id)}</div>
         `;
         container.appendChild(slot);
@@ -158,7 +173,7 @@
         const item = document.createElement('div');
         item.className = 'grid-item';
         item.innerHTML = `
-          <img src="${qrUrl(id, 150)}" alt="QR: ${id}" width="150" height="150" />
+          <img src="${qrUrl(id, GRID_SIZE)}" alt="QR: ${id}" width="${GRID_SIZE}" height="${GRID_SIZE}" />
           <div class="grid-label">${formatLabel(id)}</div>
         `;
         container.appendChild(item);

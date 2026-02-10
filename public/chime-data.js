@@ -1,0 +1,27 @@
+// Auto-generated from audio/spliced/ — do not edit manually
+window.CHIME_IDS = [
+  "Chime_01",
+  "Chime_02",
+  "Chime_03",
+  "Chime_04",
+  "Chime_05",
+  "Chime_06",
+  "Chime_07",
+  "Chime_08",
+  "Chime_09",
+  "Chime_10",
+  "Chime_11",
+  "Chime_12",
+  "Chime_13",
+  "Chime_14",
+  "Chime_15",
+  "Chime_16",
+  "Chime_17",
+  "Chime_18",
+  "Chime_19",
+  "Chime_20",
+  "Chime_21",
+  "Chime_22",
+  "Chime_23",
+  "Chime_24"
+];

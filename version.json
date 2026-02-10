@@ -1,7 +1,7 @@
 {
   "name": "Wind Chime - Companion App",
-  "version": "0.1.1",
-  "build": 4,
+  "version": "0.1.2",
+  "build": 0,
   "history": [
     {
       "version": "0.1.0",
@@ -61,6 +61,12 @@
       "build": 0,
       "date": "2026-02-09",
       "summary": "Fix scan/audio lifecycle: allowMultiple continuous scanning, 3-sound cap, instant stop on toggle, tap-to-scan gate"
+    },
+    {
+      "version": "0.1.2",
+      "build": 0,
+      "date": "2026-02-10",
+      "summary": "QR Display Page: 3 random slots with randomize, full chime scroll strip, auto-generated from audio/spliced"
     }
   ]
 }

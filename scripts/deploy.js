@@ -1,5 +1,8 @@
 import { execSync } from 'child_process'
 
+console.log('Generating chime list from audio/spliced/...')
+execSync('node scripts/generate-chime-list.js', { stdio: 'inherit' })
+
 console.log('Building...')
 execSync('npm run build', { stdio: 'inherit' })
 

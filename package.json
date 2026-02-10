@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "update-chimes": "node scripts/generate-chime-list.js",
     "deploy": "node scripts/deploy.js"
   },
   "dependencies": {
