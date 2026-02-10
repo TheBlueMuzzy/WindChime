@@ -1,7 +1,7 @@
 {
   "name": "Wind Chime - Companion App",
   "version": "0.1.0",
-  "build": 16,
+  "build": 17,
   "history": [
     {
       "version": "0.1.0",
@@ -43,6 +43,12 @@
       "build": 16,
       "date": "2026-02-09",
       "summary": "Wind chime sound generator with C major triad synthesis"
+    },
+    {
+      "version": "0.1.0",
+      "build": 17,
+      "date": "2026-02-09",
+      "summary": "Update SOUND_MAP to .wav for all chimes, fix build"
     }
   ]
 }

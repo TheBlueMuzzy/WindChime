@@ -12,7 +12,7 @@ function App() {
   const cameraContainerRef = useRef<HTMLDivElement>(null)
   const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [audioUnlocked, setAudioUnlocked] = useState(false)
-  const { loadSound, playSound, resume, contextState } = useAudioEngine()
+  const { loadSound, playSound, resume } = useAudioEngine()
   const soundsLoaded = useRef(false)
 
   // Pre-load all sounds from SOUND_MAP on mount
