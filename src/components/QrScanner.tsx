@@ -4,9 +4,10 @@ interface QrScannerProps {
   onScan: (detectedCodes: IDetectedBarcode[]) => void
   onError?: (error: unknown) => void
   lastDetected?: string
+  scanCount?: number
 }
 
-export default function QrScanner({ onScan, onError, lastDetected }: QrScannerProps) {
+export default function QrScanner({ onScan, onError, lastDetected, scanCount }: QrScannerProps) {
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       <Scanner
@@ -64,7 +65,7 @@ export default function QrScanner({ onScan, onError, lastDetected }: QrScannerPr
             borderRadius: '4px',
           }}
         >
-          Detected: {lastDetected}
+          Detected: {lastDetected}{scanCount ? ` (scan #${scanCount})` : ''}
         </span>
       )}
     </div>

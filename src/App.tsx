@@ -5,8 +5,10 @@ type CameraStatus = 'loading' | 'active' | 'denied' | 'error'
 
 function App() {
   const [lastDetected, setLastDetected] = useState('')
+  const [scanCount, setScanCount] = useState(0)
   const [cameraStatus, setCameraStatus] = useState<CameraStatus>('loading')
   const hasActivated = useRef(false)
+  const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const fullScreenContainer = {
     width: '100dvw',
@@ -37,11 +39,15 @@ function App() {
                 hasActivated.current = true
                 setCameraStatus('active')
               }
+              if (clearTimer.current) clearTimeout(clearTimer.current)
               if (codes.length > 0) {
                 const values = codes.map((c) => c.rawValue).join(', ')
                 setLastDetected(values)
-                console.log(codes)
+                setScanCount((c) => c + 1)
               }
+              clearTimer.current = setTimeout(() => {
+                setLastDetected('')
+              }, 2000)
             }}
             onError={(error) => {
               console.error(error)
@@ -55,6 +61,7 @@ function App() {
               }
             }}
             lastDetected={lastDetected}
+            scanCount={scanCount}
           />
           {cameraStatus === 'loading' && (
             <div
