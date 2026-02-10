@@ -15,3 +15,7 @@ const js = `// Auto-generated from audio/spliced2/ — do not edit manually\nwin
 
 writeFileSync(outFile, js)
 console.log(`Generated chime-data.js with ${files.length} chimes`)
+
+const manifestFile = resolve(__dirname, '..', 'public', 'sounds', 'manifest.json')
+writeFileSync(manifestFile, JSON.stringify(files, null, 2))
+console.log(`Generated manifest.json with ${files.length} chimes`)

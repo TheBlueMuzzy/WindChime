@@ -152,14 +152,12 @@
     <div class="scroll-strip" id="grid"></div>
   </div>
 
-  <!-- Dynamic chime list generated from audio/spliced/ -->
-  <script src="chime-data.js"></script>
   <script>
-    // CHIME_IDS comes from chime-data.js (auto-generated from audio/spliced/)
-    const ALL_CHIMES = window.CHIME_IDS || [];
+    const GITHUB_API_URL = 'https://api.github.com/repos/TheBlueMuzzy/WindChime/contents/public/sounds';
+    let ALL_CHIMES = [];
 
     const SLOT_SIZE = 300;
-    const GRID_SIZE = Math.round(SLOT_SIZE * 0.75); // 225px
+    const GRID_SIZE = Math.round(SLOT_SIZE * 0.75);
 
     function qrUrl(value, size) {
       return `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(value)}&size=${size}x${size}`;
@@ -213,9 +211,41 @@
       document.getElementById('toggle-grid').textContent = gridVisible ? 'Hide' : 'Show';
     }
 
-    // Initial render
-    renderSlots(pickRandom3());
-    renderGrid();
+    async function init() {
+      const status = document.getElementById('active-slots');
+      status.innerHTML = '<div style="color:#888;text-align:center;padding:2rem">Loading chimes...</div>';
+
+      try {
+        const res = await fetch(GITHUB_API_URL);
+        if (res.ok) {
+          const files = await res.json();
+          ALL_CHIMES = files
+            .map(f => f.name)
+            .filter(n => n.startsWith('Chime_') && n.endsWith('.mp3'))
+            .map(n => n.replace('.mp3', ''))
+            .sort();
+        } else {
+          throw new Error('GitHub API failed');
+        }
+      } catch {
+        try {
+          const res = await fetch('sounds/manifest.json');
+          if (res.ok) {
+            ALL_CHIMES = await res.json();
+          } else {
+            throw new Error('Manifest failed');
+          }
+        } catch {
+          status.innerHTML = '<div style="color:#f88;text-align:center;padding:2rem">Failed to load chime list</div>';
+          return;
+        }
+      }
+
+      renderSlots(pickRandom3());
+      renderGrid();
+    }
+
+    init();
   </script>
 </body>
 </html>
