@@ -19,7 +19,7 @@ None
 - [x] **Phase 7: Detection State & Cooldowns** - Superseded by allowMultiple + isPlaying pattern
 - [x] **Phase 8: Git + Deploy** - Git repo, GitHub remote, GitHub Pages deploy (like GOOPS)
 - [ ] **Phase 9: QR Display Page** - Separate hosted page showing QR codes for scanning from a phone (design TBD with Muzzy)
-- [ ] **Phase 10: Polish** - Visual detection indicator, camera permission denied help screen
+- [x] **Phase 10: Polish** - Visual detection indicator, camera permission denied help screen
 - [ ] **Phase 11: iPhone Testing & Fixes** - External testing on iOS Safari, fix whatever breaks
 
 ## Phase Details
@@ -123,7 +123,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 10-01: Visual feedback on QR detection + camera permission denied recovery screen
+- [x] 10-01: Visual feedback on QR detection + camera permission denied recovery screen
 
 ### Phase 11: iPhone Testing & Fixes
 **Goal**: App works on iOS Safari — tested by someone with an iPhone, fixes applied
@@ -151,5 +151,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 7. Detection State & Cooldowns | 2/2 | Complete (superseded) | 2026-02-09 |
 | 8. Git + Deploy | 1/1 | Complete | 2026-02-10 |
 | 9. QR Display Page | 0/? | Awaiting design input | - |
-| 10. Polish | 0/1 | Not started | - |
+| 10. Polish | 1/1 | Complete | 2026-02-10 |
 | 11. iPhone Testing & Fixes | 0/? | Blocked (needs tester) | - |
