@@ -126,12 +126,14 @@ export function useAudioEngine() {
 
     source.onended = () => {
       playingRef.current.delete(id)
+      console.log(`[audio] ${id} ended (onended)`)
     }
 
     // Fallback cleanup in case onended doesn't fire on mobile
     setTimeout(() => {
       if (playingRef.current.has(id)) {
         playingRef.current.delete(id)
+        console.log(`[audio] ${id} ended (timeout)`)
       }
     }, (duration + 0.2) * 1000)
 

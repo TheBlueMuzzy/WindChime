@@ -23,25 +23,74 @@ function App() {
   const { loadSound, playSound, isPlaying, getPlaying, resume } = useAudioEngine()
   const soundsLoaded = useRef(false)
   const [nowPlaying, setNowPlaying] = useState<{ id: string; elapsed: number; duration: number }[]>([])
+  const [debugLog, setDebugLog] = useState<string[]>([])
 
-  // Scan handler via ref — never causes QrScanner re-render
+  // Track which chime codes are currently visible in the camera
+  const visibleCodesRef = useRef<Map<string, number>>(new Map()) // code → last seen timestamp
+
+  function dbg(msg: string) {
+    const t = new Date()
+    const ts = `${t.getMinutes()}:${String(t.getSeconds()).padStart(2, '0')}.${String(t.getMilliseconds()).slice(0, 1)}`
+    setDebugLog((prev) => [`${ts} ${msg}`, ...prev].slice(0, 10))
+  }
+
+  // Scan handler — updates visible codes set, plays NEW codes immediately
+  // Scanner only fires onScan when the detected set CHANGES, so we treat
+  // the last reported set as current truth until a new scan says otherwise.
   const onScanRef = useRef((codes: { rawValue: string }[]) => {
     if (clearTimer.current) clearTimeout(clearTimer.current)
     if (codes.length > 0) {
       const values = codes.map((c) => c.rawValue).join(', ')
       setLastDetected(values)
       setScanCount((c) => c + 1)
+
+      // Build new visible set from this scan (only valid chimes)
+      const newVisible = new Set<string>()
       for (const code of codes) {
-        const raw = code.rawValue
-        if (CHIME_IDS.has(raw) && audioUnlockedRef.current && !isPlaying(raw)) {
-          playSound(raw)
+        if (CHIME_IDS.has(code.rawValue)) newVisible.add(code.rawValue)
+      }
+
+      // Detect codes that just entered the frame
+      for (const id of newVisible) {
+        if (!visibleCodesRef.current.has(id)) {
+          // New code — play immediately
+          if (audioUnlockedRef.current && !isPlaying(id)) {
+            playSound(id)
+            dbg(`▶ NEW: ${id}`)
+          }
         }
       }
+
+      // Detect codes that just left the frame
+      for (const id of visibleCodesRef.current.keys()) {
+        if (!newVisible.has(id)) {
+          dbg(`EXIT: ${id}`)
+        }
+      }
+
+      // Replace visible set with what the scanner just reported
+      visibleCodesRef.current = new Map([...newVisible].map(id => [id, Date.now()]))
+      dbg(`SCAN: ${codes.length} — vis:${visibleCodesRef.current.size}`)
     }
     clearTimer.current = setTimeout(() => {
       setLastDetected('')
     }, 2000)
   })
+
+  // Replay interval — checks every 500ms for sounds that finished but code is still in view
+  useEffect(() => {
+    if (!audioUnlocked) return
+    const interval = setInterval(() => {
+      // Replay any visible code whose sound has finished
+      for (const id of visibleCodesRef.current.keys()) {
+        if (!isPlaying(id)) {
+          playSound(id)
+          dbg(`▶ REPLAY: ${id}`)
+        }
+      }
+    }, 500)
+    return () => clearInterval(interval)
+  }, [audioUnlocked, isPlaying, playSound])
 
   // Error handler via ref
   const onErrorRef = useRef((error: unknown) => {
@@ -248,6 +297,31 @@ function App() {
           )}
         </div>
       )}
+
+      {/* Debug log — bottom of screen, outside camera */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          background: 'rgba(0,0,0,0.9)',
+          color: '#0f0',
+          fontFamily: 'monospace',
+          fontSize: '0.65rem',
+          padding: '0.3rem 0.5rem',
+          maxHeight: '20vh',
+          overflow: 'hidden',
+          zIndex: 50,
+        }}
+      >
+        <div style={{ color: '#ff0', marginBottom: '0.15rem' }}>
+          🔊 {audioUnlocked ? 'ON' : 'OFF'} | Scans: {scanCount}
+        </div>
+        {debugLog.map((line, i) => (
+          <div key={i} style={{ opacity: 1 - i * 0.08 }}>{line}</div>
+        ))}
+      </div>
 
       {cameraStatus === 'denied' && (
         <div style={{ textAlign: 'center', padding: '2rem', color: '#fff' }}>
