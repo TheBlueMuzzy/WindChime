@@ -1,19 +1,17 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import QrScanner from './components/QrScanner'
 import { useAudioEngine } from './hooks/useAudioEngine'
+import { useChimeList } from './hooks/useChimeList'
 import versionData from '../version.json'
-
-/** All valid chime IDs — QR codes encode these values directly. */
-const CHIME_IDS = new Set([
-  'Chime_01', 'Chime_02', 'Chime_03', 'Chime_04', 'Chime_05', 'Chime_06',
-  'Chime_07', 'Chime_08', 'Chime_09', 'Chime_10', 'Chime_11', 'Chime_12',
-  'Chime_13', 'Chime_14', 'Chime_15', 'Chime_16', 'Chime_17', 'Chime_18',
-  'Chime_19', 'Chime_20', 'Chime_21', 'Chime_22', 'Chime_23', 'Chime_24',
-])
 
 type CameraStatus = 'loading' | 'active' | 'denied' | 'error'
 
 function App() {
+  const { chimeIds, loading: _chimesLoading } = useChimeList()
+  const chimeIdSet = useMemo(() => new Set(chimeIds), [chimeIds])
+  const chimeIdSetRef = useRef(chimeIdSet)
+  useEffect(() => { chimeIdSetRef.current = chimeIdSet }, [chimeIdSet])
+
   const [lastDetected, setLastDetected] = useState('')
   const [scanCount, setScanCount] = useState(0)
   const [cameraStatus, setCameraStatus] = useState<CameraStatus>('loading')
@@ -21,7 +19,7 @@ function App() {
   const [audioUnlocked, setAudioUnlocked] = useState(false)
   const audioUnlockedRef = useRef(false)
   const { loadSound, playSound, isPlaying, getPlaying, playingCount: _playingCount, stopAll, resume } = useAudioEngine()
-  const soundsLoaded = useRef(false)
+  const soundsLoaded = useRef<string | null>(null)
   const [nowPlaying, setNowPlaying] = useState<{ id: string; elapsed: number; duration: number }[]>([])
   const [debugLog, setDebugLog] = useState<string[]>([])
 
@@ -42,7 +40,7 @@ function App() {
 
     const chimes = codes
       .map((c) => c.rawValue)
-      .filter((v) => CHIME_IDS.has(v))
+      .filter((v) => chimeIdSetRef.current.has(v))
 
     if (chimes.length === 0) return
 
@@ -88,15 +86,18 @@ function App() {
   // Pre-load all chime sounds once audio is unlocked (context resumed)
   useEffect(() => {
     if (!audioUnlocked) return
-    if (soundsLoaded.current) return
-    soundsLoaded.current = true
+    if (chimeIds.length === 0) return
+    // Re-load if chime list changed (e.g. new sounds discovered)
+    const listKey = chimeIds.join(',')
+    if (soundsLoaded.current === listKey) return
+    soundsLoaded.current = listKey
     let loaded = 0
-    for (const id of CHIME_IDS) {
+    for (const id of chimeIds) {
       loadSound(id, `${import.meta.env.BASE_URL}sounds/${id}.mp3`)
-        .then(() => { loaded++; dbg(`Loaded ${loaded}/${CHIME_IDS.size}`) })
+        .then(() => { loaded++; dbg(`Loaded ${loaded}/${chimeIds.length}`) })
         .catch((err) => dbg(`FAIL ${id}: ${err}`))
     }
-  }, [audioUnlocked, loadSound])
+  }, [audioUnlocked, loadSound, chimeIds])
 
   // Detect camera active by polling for a playing <video>
   useEffect(() => {
