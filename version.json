@@ -1,7 +1,7 @@
 {
   "name": "Wind Chime - Companion App",
-  "version": "0.1.2",
-  "build": 13,
+  "version": "0.2.0",
+  "build": 0,
   "history": [
     {
       "version": "0.1.0",
@@ -91,6 +91,12 @@
       "build": 13,
       "date": "2026-02-10",
       "summary": "Deploy 100-sound dynamic app to GitHub Pages, push master for API discovery"
+    },
+    {
+      "version": "0.2.0",
+      "build": 0,
+      "date": "2026-02-10",
+      "summary": "v0.2 milestone: 100-sound wind chime companion app shipped"
     }
   ]
 }
