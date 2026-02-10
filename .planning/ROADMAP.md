@@ -1,0 +1,155 @@
+# Roadmap: Wind Chime — Companion App
+
+## Overview
+
+Turn a physical wind chime card layout into a live audio experience. Core scanning + audio functionality complete (Phases 1-7). Remaining work: deploy, QR display page, polish, and iPhone testing. 11 phases total.
+
+## Domain Expertise
+
+None
+
+## Phases
+
+- [x] **Phase 1: Project Foundation** - Scaffold Vite/React/TS, install dependencies, basic app shell with camera display
+- [x] **Phase 2: QR Scanner Integration** - Camera access, @yudiel/react-qr-scanner, detect single QR code and display value
+- [x] **Phase 3: Audio Engine Core** - Web Audio API context, load/decode audio buffers, play a sound on QR detection
+- [x] **Phase 4: Test Content** - 24 real wind chime sounds sourced, spliced, and integrated
+- [x] **Phase 5: Multi-Code Detection** - Multi-code detection via allowMultiple (left-to-right sorting cut)
+- [x] **Phase 6: Sound Layering & Fade** - Concurrent playback with gain nodes, fade envelopes (done early in Phase 3)
+- [x] **Phase 7: Detection State & Cooldowns** - Superseded by allowMultiple + isPlaying pattern
+- [ ] **Phase 8: Git + Deploy** - Git repo, GitHub remote, GitHub Pages deploy (like GOOPS)
+- [ ] **Phase 9: QR Display Page** - Separate hosted page showing QR codes for scanning from a phone (design TBD with Muzzy)
+- [ ] **Phase 10: Polish** - Visual detection indicator, camera permission denied help screen
+- [ ] **Phase 11: iPhone Testing & Fixes** - External testing on iOS Safari, fix whatever breaks
+
+## Phase Details
+
+### Phase 1: Project Foundation
+**Goal**: Running Vite dev server with a React/TS app shell showing a full-screen camera placeholder
+**Depends on**: Nothing (first phase)
+**Research**: Unlikely (standard Vite/React/TS setup, Muzzy's established stack)
+**Plans**: 2 plans
+
+Plans:
+- [x] 01-01: Scaffold Vite + React + TS project, install core dependencies
+- [x] 01-02: App shell layout — full-screen landscape container, dark background, camera placeholder
+
+### Phase 2: QR Scanner Integration
+**Goal**: Phone camera activates and detects a single QR code, displaying its raw value on screen
+**Depends on**: Phase 1
+**Research**: Likely (new library — @yudiel/react-qr-scanner API, configuration, event handling)
+**Research topics**: @yudiel/react-qr-scanner API docs, barcode-detector polyfill setup, camera constraints for rear-facing landscape
+**Plans**: 3 plans
+
+Plans:
+- [x] 02-01: Install @yudiel/react-qr-scanner and barcode-detector polyfill, configure scanner component
+- [x] 02-02: Camera permissions flow — request rear camera, handle grant/deny
+- [x] 02-03: Single QR detection — display detected QR value on screen as proof of life
+
+### Phase 3: Audio Engine Core
+**Goal**: Detecting a QR code triggers a sound playing through Web Audio API
+**Depends on**: Phase 2
+**Research**: Likely (Web Audio API patterns — AudioContext, decodeAudioData, AudioBufferSourceNode, GainNode)
+**Research topics**: Web Audio API best practices for mobile, AudioContext resume on user gesture (iOS requirement), buffer decoding patterns
+**Plans**: 3 plans
+
+Plans:
+- [x] 03-01: Create useAudioEngine hook — AudioContext setup, buffer loading, single sound playback
+- [x] 03-02: Connect QR detection to audio — detected code triggers mapped sound
+- [x] 03-03: Handle mobile audio unlock (iOS/Android require user gesture to start AudioContext)
+
+### Phase 4: Test Content
+**Goal**: Real wind chime sounds and QR test content ready for testing
+**Depends on**: Phase 3
+**Status**: Complete — 24 real sounds sourced and integrated. QR test page exists. Plan 02 (QR generation/printable layout) superseded by Phase 9.
+**Plans**: 1 plan (plan 02 superseded)
+
+Plans:
+- [x] 04-01: Source 24 real wind chime sounds, splice, integrate into app *(exceeded original 3-sound goal)*
+- [x] 04-02: QR code generation and display *(superseded — absorbed into Phase 9 QR Display Page)*
+
+### Phase 5: Multi-Code Detection
+**Goal**: Camera detects multiple QR codes simultaneously
+**Depends on**: Phase 4
+**Status**: Complete — multi-code detection works via `allowMultiple`. Left-to-right sorting cut (not needed).
+**Plans**: 1 plan (plan 02 cut)
+
+Plans:
+- [x] 05-01: Enable multi-code detection in scanner, handle array of detected codes *(done during Phase 3 bugfixes)*
+- [x] 05-02: Left-to-right sorting *(cut — not needed for the experience)*
+
+### Phase 6: Sound Layering & Fade
+**Goal**: Multiple sounds play concurrently with smooth layering and natural fade-out
+**Depends on**: Phase 5
+**Status**: Complete (done early in Phase 3).
+**Plans**: 3 plans
+
+Plans:
+- [x] 06-01: Support concurrent audio sources *(done in Phase 3)*
+- [x] 06-02: Add GainNode per sound for individual volume control *(done in Phase 3)*
+- [x] 06-03: Implement fade envelopes — fast fade-in, fade-out using gain ramps *(done in Phase 3)*
+
+### Phase 7: Detection State & Cooldowns
+**Goal**: QR codes can re-trigger after leaving/re-entering frame
+**Status**: Superseded — `allowMultiple` + `isPlaying` pattern handles everything. No explicit cooldown needed.
+
+Plans:
+- [x] 07-01: Detection state *(handled by allowMultiple)*
+- [x] 07-02: Re-trigger logic *(handled by isPlaying + MAX_SIMULTANEOUS cap)*
+
+### Phase 8: Git + Deploy
+**Goal**: WindChime app in a GitHub repo, deployed to GitHub Pages (like thebluemuzzy.github.io/GOOPS/)
+**Depends on**: Phase 7 (core app complete)
+**Research**: Unlikely (mirrors GOOPS deploy pattern)
+**Plans**: 1 plan
+
+Plans:
+- [ ] 08-01: Create GitHub repo, configure Vite base path, deploy script, push to GitHub Pages
+
+### Phase 9: QR Display Page
+**Goal**: Separate hosted page showing QR codes on a computer screen for phone scanning
+**Depends on**: Phase 8 (needs deploy infrastructure)
+**Research**: No — design direction provided by Muzzy
+**Status**: Awaiting design discussion with Muzzy
+**Plans**: TBD
+
+Plans:
+- [ ] 09-01: TBD
+
+### Phase 10: Polish
+**Goal**: Visual detection indicator + camera permission denied help screen
+**Depends on**: Phase 8 (needs deployed app to test)
+**Research**: Unlikely
+**Plans**: 1 plan
+
+Plans:
+- [ ] 10-01: Visual feedback on QR detection + camera permission denied recovery screen
+
+### Phase 11: iPhone Testing & Fixes
+**Goal**: App works on iOS Safari — tested by someone with an iPhone, fixes applied
+**Depends on**: Phase 8 (needs deployed URL to share)
+**Research**: Likely (iOS-specific WASM polyfill, Safari camera quirks)
+**Status**: Cannot start until external iPhone tester available
+**Plans**: TBD
+
+Plans:
+- [ ] 11-01: TBD
+
+## Progress
+
+**Execution Order:**
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 1. Project Foundation | 2/2 | Complete | 2026-02-09 |
+| 2. QR Scanner Integration | 3/3 | Complete | 2026-02-09 |
+| 3. Audio Engine Core | 3/3 | Complete | 2026-02-09 |
+| 4. Test Content | 1/1 | Complete (plan 02 → Phase 9) | 2026-02-09 |
+| 5. Multi-Code Detection | 1/1 | Complete (L-R sorting cut) | 2026-02-09 |
+| 6. Sound Layering & Fade | 3/3 | Complete (done early) | 2026-02-09 |
+| 7. Detection State & Cooldowns | 2/2 | Complete (superseded) | 2026-02-09 |
+| 8. Git + Deploy | 0/1 | Not started | - |
+| 9. QR Display Page | 0/? | Awaiting design input | - |
+| 10. Polish | 0/1 | Not started | - |
+| 11. iPhone Testing & Fixes | 0/? | Blocked (needs tester) | - |
