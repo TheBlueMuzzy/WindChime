@@ -73,13 +73,32 @@
       margin: 2rem 0 0;
       padding-bottom: 225px;
     }
+    .section-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
     .section-label {
-      text-align: center;
       font-size: 0.9rem;
       color: #666;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      margin-bottom: 1.5rem;
+    }
+    .toggle-btn {
+      background: #333;
+      color: #aaa;
+      border: 1px solid #555;
+      border-radius: 6px;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .toggle-btn:hover {
+      background: #444;
+      color: #ddd;
     }
 
     /* Scroll strip — same width as 6 columns would be, scrolls horizontally */
@@ -123,10 +142,13 @@
   </div>
 
   <hr class="separator">
-  <div class="section-label">All Chimes</div>
+  <div class="section-header">
+    <div class="section-label">All Chimes</div>
+    <button class="toggle-btn" id="toggle-grid" onclick="toggleGrid()">Hide</button>
+  </div>
 
   <!-- Full strip: every chime, scrolls horizontally -->
-  <div class="scroll-wrapper">
+  <div class="scroll-wrapper" id="grid-wrapper">
     <div class="scroll-strip" id="grid"></div>
   </div>
 
@@ -182,6 +204,13 @@
 
     function randomizeSlots() {
       renderSlots(pickRandom3());
+    }
+
+    let gridVisible = true;
+    function toggleGrid() {
+      gridVisible = !gridVisible;
+      document.getElementById('grid-wrapper').style.display = gridVisible ? '' : 'none';
+      document.getElementById('toggle-grid').textContent = gridVisible ? 'Hide' : 'Show';
     }
 
     // Initial render
