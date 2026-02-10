@@ -1,5 +1,4 @@
-// Auto-generated from audio/spliced2/ — do not edit manually
-window.CHIME_IDS = [
+[
   "Chime_001",
   "Chime_002",
   "Chime_003",
@@ -100,4 +99,4 @@ window.CHIME_IDS = [
   "Chime_098",
   "Chime_099",
   "Chime_100"
-];
+]
