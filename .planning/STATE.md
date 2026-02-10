@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-09)
 
 **Core value:** Point the camera at cards and instantly hear sounds — the "wow" moment must feel magical and work on any phone.
-**Current focus:** Phase 10 complete — visual polish deployed. Next: Phase 9 (QR Display Page) or Phase 11 (iPhone Testing).
+**Current focus:** Phases 9-10 complete. Last phase: Phase 11 (iPhone Testing & Fixes).
 
 ## Current Position
 
@@ -14,7 +14,7 @@ Plan: 1 of 1 in current phase
 Status: Phase complete
 Last activity: 2026-02-10 — Completed 10-01-PLAN.md
 
-Progress: ██████████████████░ 82% (9/11 phases complete)
+Progress: ███████████████████░ 91% (10/11 phases complete)
 
 ## Version
 

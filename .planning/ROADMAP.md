@@ -18,7 +18,7 @@ None
 - [x] **Phase 6: Sound Layering & Fade** - Concurrent playback with gain nodes, fade envelopes (done early in Phase 3)
 - [x] **Phase 7: Detection State & Cooldowns** - Superseded by allowMultiple + isPlaying pattern
 - [x] **Phase 8: Git + Deploy** - Git repo, GitHub remote, GitHub Pages deploy (like GOOPS)
-- [ ] **Phase 9: QR Display Page** - Separate hosted page showing QR codes for scanning from a phone (design TBD with Muzzy)
+- [x] **Phase 9: QR Display Page** - Separate hosted page showing QR codes for scanning from a phone
 - [x] **Phase 10: Polish** - Visual detection indicator, camera permission denied help screen
 - [ ] **Phase 11: iPhone Testing & Fixes** - External testing on iOS Safari, fix whatever breaks
 
@@ -109,12 +109,11 @@ Plans:
 ### Phase 9: QR Display Page
 **Goal**: Separate hosted page showing QR codes on a computer screen for phone scanning
 **Depends on**: Phase 8 (needs deploy infrastructure)
-**Research**: No — design direction provided by Muzzy
-**Status**: Awaiting design discussion with Muzzy
-**Plans**: TBD
+**Status**: Complete — built informally (codes.html with 3 random slots, randomize button, full chime scroll strip, hide/show toggle)
+**Plans**: 1 plan (built outside formal plan flow)
 
 Plans:
-- [ ] 09-01: TBD
+- [x] 09-01: QR Display Page with dynamic chime grid, randomize, and hide/show toggle
 
 ### Phase 10: Polish
 **Goal**: Visual detection indicator + camera permission denied help screen
@@ -150,6 +149,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 6. Sound Layering & Fade | 3/3 | Complete (done early) | 2026-02-09 |
 | 7. Detection State & Cooldowns | 2/2 | Complete (superseded) | 2026-02-09 |
 | 8. Git + Deploy | 1/1 | Complete | 2026-02-10 |
-| 9. QR Display Page | 0/? | Awaiting design input | - |
+| 9. QR Display Page | 1/1 | Complete | 2026-02-10 |
 | 10. Polish | 1/1 | Complete | 2026-02-10 |
 | 11. iPhone Testing & Fixes | 0/? | Blocked (needs tester) | - |
