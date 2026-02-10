@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import QrScanner from './components/QrScanner'
 import { useAudioEngine } from './hooks/useAudioEngine'
+import versionData from '../version.json'
 
 /** All valid chime IDs — QR codes encode these values directly. */
 const CHIME_IDS = new Set([
@@ -290,7 +291,7 @@ function App() {
         }}
       >
         <div style={{ color: '#ff0', marginBottom: '0.15rem' }}>
-          {audioUnlocked ? 'ON' : 'OFF'} | Scans: {scanCount} | v0.1.1.4
+          {audioUnlocked ? 'ON' : 'OFF'} | Scans: {scanCount} | v{versionData.version}.{versionData.build}
         </div>
         {debugLog.map((line, i) => (
           <div key={i} style={{ opacity: 1 - i * 0.08 }}>{line}</div>

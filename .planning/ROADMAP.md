@@ -129,10 +129,10 @@ Plans:
 **Depends on**: Phase 8 (needs deployed URL to share)
 **Research**: Likely (iOS-specific WASM polyfill, Safari camera quirks)
 **Status**: Cannot start until external iPhone tester available
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 11-01: TBD
+- [ ] 11-01: iOS Safari pre-flight audit, deploy, real-device testing with iPhone tester
 
 ## Progress
 
