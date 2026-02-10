@@ -11,7 +11,8 @@ function App() {
   const [cameraStatus, setCameraStatus] = useState<CameraStatus>('loading')
   const hasActivated = useRef(false)
   const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const { loadSound, playSound } = useAudioEngine()
+  const [audioUnlocked, setAudioUnlocked] = useState(false)
+  const { loadSound, playSound, resume, contextState } = useAudioEngine()
   const soundsLoaded = useRef(false)
 
   // Pre-load all sounds from SOUND_MAP on mount
@@ -23,6 +24,13 @@ function App() {
       }
     }
   }, [loadSound])
+
+  // Auto-unlock if AudioContext resumes on its own (some Android browsers)
+  useEffect(() => {
+    if (contextState === 'running') {
+      setAudioUnlocked(true)
+    }
+  }, [contextState])
 
   const fullScreenContainer = {
     width: '100dvw',
@@ -103,6 +111,39 @@ function App() {
                 }}
               >
                 Starting camera...
+              </span>
+            </div>
+          )}
+          {cameraStatus === 'active' && !audioUnlocked && contextState === 'suspended' && (
+            <div
+              onClick={() => {
+                void resume().then(() => setAudioUnlocked(true))
+              }}
+              onTouchStart={() => {
+                void resume().then(() => setAudioUnlocked(true))
+              }}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'rgba(0, 0, 0, 0.7)',
+                zIndex: 20,
+                cursor: 'pointer',
+              }}
+            >
+              <span
+                style={{
+                  color: '#fff',
+                  fontSize: '1.4rem',
+                  fontWeight: 600,
+                  textAlign: 'center',
+                  padding: '1rem',
+                  textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+                }}
+              >
+                Tap anywhere to enable sound
               </span>
             </div>
           )}
