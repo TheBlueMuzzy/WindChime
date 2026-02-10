@@ -1,12 +1,18 @@
 {
   "name": "Wind Chime - Companion App",
   "version": "0.1.0",
-  "build": 10,
+  "build": 11,
   "history": [
     {
       "version": "0.1.0",
       "date": "2026-02-09",
       "summary": "Project created"
+    },
+    {
+      "version": "0.1.0",
+      "build": 11,
+      "date": "2026-02-09",
+      "summary": "Sound mapping and QR detection to playback connection"
     }
   ]
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import QrScanner from './components/QrScanner'
 import { useAudioEngine } from './hooks/useAudioEngine'
+import { SOUND_MAP } from './config/sounds'
 
 type CameraStatus = 'loading' | 'active' | 'denied' | 'error'
 
@@ -11,13 +12,15 @@ function App() {
   const hasActivated = useRef(false)
   const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const { loadSound, playSound } = useAudioEngine()
-  const soundLoaded = useRef(false)
+  const soundsLoaded = useRef(false)
 
-  // Load test sound on mount (temporary — replaced in 03-02 with proper mapping)
+  // Pre-load all sounds from SOUND_MAP on mount
   useEffect(() => {
-    if (!soundLoaded.current) {
-      soundLoaded.current = true
-      void loadSound('test', '/sounds/test-tone.wav')
+    if (!soundsLoaded.current) {
+      soundsLoaded.current = true
+      for (const [id, url] of Object.entries(SOUND_MAP)) {
+        void loadSound(id, url)
+      }
     }
   }, [loadSound])
 
@@ -55,8 +58,12 @@ function App() {
                 const values = codes.map((c) => c.rawValue).join(', ')
                 setLastDetected(values)
                 setScanCount((c) => c + 1)
-                // Temporary: play test sound on any QR detection (replaced in 03-02)
-                playSound('test')
+                // Play matching sound for each detected QR code
+                for (const code of codes) {
+                  if (code.rawValue in SOUND_MAP) {
+                    playSound(code.rawValue)
+                  }
+                }
               }
               clearTimer.current = setTimeout(() => {
                 setLastDetected('')
