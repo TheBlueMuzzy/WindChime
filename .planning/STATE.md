@@ -5,27 +5,27 @@
 See: .planning/PROJECT.md (updated 2026-02-09)
 
 **Core value:** Point the camera at cards and instantly hear sounds — the "wow" moment must feel magical and work on any phone.
-**Current focus:** Phase 12 (Sound Upgrade) in progress — 4/5 plans complete.
+**Current focus:** Phase 12 (Sound Upgrade) complete — all 5/5 plans done. Milestone ready for completion.
 
 ## Current Position
 
 Phase: 12 of 12 (Sound Upgrade)
-Plan: 4 of 5 in current phase
-Status: In progress
-Last activity: 2026-02-10 — Completed 12-04-PLAN.md
+Plan: 5 of 5 in current phase
+Status: Phase complete
+Last activity: 2026-02-10 — Completed 12-05-PLAN.md
 
-Progress: ████████████████████ 97% (14/15 total plans in Phase 12 milestone)
+Progress: ████████████████████ 100% (15/15 total plans in Phase 12 milestone)
 
 ## Version
 
-0.1.2.12
+0.1.2.13
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 14
-- Average duration: 14 min
-- Total execution time: 3.4 hours
+- Total plans completed: 15
+- Average duration: 15 min
+- Total execution time: 3.8 hours
 
 **By Phase:**
 
@@ -36,11 +36,11 @@ Progress: ████████████████████ 97% (14/1
 | 3 | 3/3 | 52 min | 17 min |
 | 8 | 1/1 | 22 min | 22 min |
 | 10 | 1/1 | 12 min | 12 min |
-| 12 | 4/5 | 23 min | 6 min |
+| 12 | 5/5 | 71 min | 14 min |
 
 **Recent Trend:**
-- Last 5 plans: 12m, 11m, 4m, 3m, 5m
-- Trend: Fast — small focused plans executing quickly
+- Last 5 plans: 12m, 11m, 4m, 3m, 48m (deploy wait)
+- Trend: Fast builds, deploy plan inflated by GitHub Pages queue
 
 ## Accumulated Context
 
@@ -64,17 +64,19 @@ Recent decisions affecting current work:
 - dvh/dvw units for mobile-safe viewport coverage
 - HTTPS required for mobile camera — @vitejs/plugin-basic-ssl added
 - Default Scanner finder disabled — custom large scan area overlay instead
-- **`allowMultiple={true}` on Scanner** — fires onScan every scanDelay (500ms) while codes are visible. Without this, scanner deduplicates and stops after first detection.
-- **Max 3 simultaneous sounds** — hard cap in useAudioEngine.playSound. Gate checks BEFORE cleanupExpired to prevent expired-entry cleanup from opening slots too early.
-- **No cooldown/staleness system** — removed visibleCodesRef tracking, replay intervals, and staleness timeouts. Scanner's continuous firing + isPlaying check handles everything.
-- **stopAll() on toggle off** — immediately kills all AudioBufferSourceNodes when user taps to disable
+- **`allowMultiple={true}` on Scanner** — fires onScan every scanDelay (500ms) while codes are visible
+- **Max 3 simultaneous sounds** — hard cap in useAudioEngine.playSound
+- **No cooldown/staleness system** — scanner's continuous firing + isPlaying check handles everything
+- **stopAll() on toggle off** — immediately kills all AudioBufferSourceNodes
 - **WindChime dev server pinned to port 5213** — avoids collision with Goops on 5173
-- **BASE_URL prefix for public assets** — `import.meta.env.BASE_URL` required for all fetch paths to `/public/` files (GitHub Pages subdirectory hosting)
-- **Deferred sound loading** — load buffers only after user tap resumes AudioContext (mobile browsers reject decodeAudioData on suspended context)
+- **BASE_URL prefix for public assets** — `import.meta.env.BASE_URL` required for GitHub Pages subdirectory
+- **Deferred sound loading** — load buffers only after user tap resumes AudioContext
+- **Master push required before deploy** — GitHub API reads from remote master, not gh-pages
+- **Deploy.js bypassed** — audio/spliced2/ no longer exists; build+gh-pages run directly
 
 ### Deferred Issues
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
@@ -83,5 +85,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-10
-Stopped at: Completed 12-04-PLAN.md (Phase 12: Sound Upgrade — dynamic discovery)
+Stopped at: Completed 12-05-PLAN.md — Phase 12 complete, milestone ready
 Resume file: None
