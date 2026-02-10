@@ -1,7 +1,7 @@
 {
   "name": "Wind Chime - Companion App",
   "version": "0.1.0",
-  "build": 14,
+  "build": 15,
   "history": [
     {
       "version": "0.1.0",
@@ -31,6 +31,12 @@
       "build": 14,
       "date": "2026-02-09",
       "summary": "Tap-to-start audio unlock overlay for mobile browsers"
+    },
+    {
+      "version": "0.1.0",
+      "build": 15,
+      "date": "2026-02-09",
+      "summary": "Fix camera detection, gate playback on unlock, add tap-anywhere sound toggle"
     }
   ]
 }

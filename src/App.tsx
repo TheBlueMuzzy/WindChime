@@ -9,7 +9,7 @@ function App() {
   const [lastDetected, setLastDetected] = useState('')
   const [scanCount, setScanCount] = useState(0)
   const [cameraStatus, setCameraStatus] = useState<CameraStatus>('loading')
-  const hasActivated = useRef(false)
+  const cameraContainerRef = useRef<HTMLDivElement>(null)
   const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [audioUnlocked, setAudioUnlocked] = useState(false)
   const { loadSound, playSound, resume, contextState } = useAudioEngine()
@@ -25,12 +25,18 @@ function App() {
     }
   }, [loadSound])
 
-  // Auto-unlock if AudioContext resumes on its own (some Android browsers)
+  // Detect camera active by polling for a playing <video> element
   useEffect(() => {
-    if (contextState === 'running') {
-      setAudioUnlocked(true)
-    }
-  }, [contextState])
+    if (cameraStatus !== 'loading') return
+    const interval = setInterval(() => {
+      const video = cameraContainerRef.current?.querySelector('video')
+      if (video && video.readyState >= 2) {
+        setCameraStatus('active')
+        clearInterval(interval)
+      }
+    }, 200)
+    return () => clearInterval(interval)
+  }, [cameraStatus])
 
   const fullScreenContainer = {
     width: '100dvw',
@@ -54,13 +60,9 @@ function App() {
   return (
     <div style={fullScreenContainer}>
       {showScanner && (
-        <div style={cameraContainer}>
+        <div ref={cameraContainerRef} style={cameraContainer}>
           <QrScanner
             onScan={(codes) => {
-              if (!hasActivated.current) {
-                hasActivated.current = true
-                setCameraStatus('active')
-              }
               if (clearTimer.current) clearTimeout(clearTimer.current)
               if (codes.length > 0) {
                 const values = codes.map((c) => c.rawValue).join(', ')
@@ -68,7 +70,7 @@ function App() {
                 setScanCount((c) => c + 1)
                 // Play matching sound for each detected QR code
                 for (const code of codes) {
-                  if (code.rawValue in SOUND_MAP) {
+                  if (code.rawValue in SOUND_MAP && audioUnlocked) {
                     playSound(code.rawValue)
                   }
                 }
@@ -114,13 +116,14 @@ function App() {
               </span>
             </div>
           )}
-          {cameraStatus === 'active' && !audioUnlocked && contextState === 'suspended' && (
+          {cameraStatus === 'active' && (
             <div
               onClick={() => {
-                void resume().then(() => setAudioUnlocked(true))
-              }}
-              onTouchStart={() => {
-                void resume().then(() => setAudioUnlocked(true))
+                if (audioUnlocked) {
+                  setAudioUnlocked(false)
+                } else {
+                  void resume().then(() => setAudioUnlocked(true))
+                }
               }}
               style={{
                 position: 'absolute',
@@ -128,23 +131,25 @@ function App() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: 'rgba(0, 0, 0, 0.7)',
+                background: audioUnlocked ? 'transparent' : 'rgba(0, 0, 0, 0.7)',
                 zIndex: 20,
                 cursor: 'pointer',
               }}
             >
-              <span
-                style={{
-                  color: '#fff',
-                  fontSize: '1.4rem',
-                  fontWeight: 600,
-                  textAlign: 'center',
-                  padding: '1rem',
-                  textShadow: '0 2px 8px rgba(0,0,0,0.8)',
-                }}
-              >
-                Tap anywhere to enable sound
-              </span>
+              {!audioUnlocked && (
+                <span
+                  style={{
+                    color: '#fff',
+                    fontSize: '1.4rem',
+                    fontWeight: 600,
+                    textAlign: 'center',
+                    padding: '1rem',
+                    textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+                  }}
+                >
+                  Tap anywhere to enable sound
+                </span>
+              )}
             </div>
           )}
         </div>
