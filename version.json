@@ -1,7 +1,7 @@
 {
   "name": "Wind Chime - Companion App",
   "version": "0.1.0",
-  "build": 15,
+  "build": 16,
   "history": [
     {
       "version": "0.1.0",
@@ -37,6 +37,12 @@
       "build": 15,
       "date": "2026-02-09",
       "summary": "Fix camera detection, gate playback on unlock, add tap-anywhere sound toggle"
+    },
+    {
+      "version": "0.1.0",
+      "build": 16,
+      "date": "2026-02-09",
+      "summary": "Wind chime sound generator with C major triad synthesis"
     }
   ]
 }
