@@ -1,7 +1,7 @@
 {
   "name": "Wind Chime - Companion App",
   "version": "0.1.2",
-  "build": 12,
+  "build": 13,
   "history": [
     {
       "version": "0.1.0",
@@ -85,6 +85,12 @@
       "build": 12,
       "date": "2026-02-10",
       "summary": "Dynamic codes.html + manifest.json generation for offline fallback"
+    },
+    {
+      "version": "0.1.2",
+      "build": 13,
+      "date": "2026-02-10",
+      "summary": "Deploy 100-sound dynamic app to GitHub Pages, push master for API discovery"
     }
   ]
 }
